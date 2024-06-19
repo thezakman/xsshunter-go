@@ -1,7 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #03396c;
@@ -16,40 +19,33 @@
 
         .login {
             background-color: #011f4b;
-            padding: 20px;
-            border-radius: 5px;
-            width: 300px;
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-    
-        #loginForm {
-            display: flex;
-            flex-direction: column;
+
+        .form-control {
+            background-color: #03396c;
+            color: #b3cde0;
+            border: 1px solid #b3cde0;
         }
-    
-        #loginForm label {
-            margin-bottom: 10px;
+
+        .form-control:focus {
+            background-color: #03396c;
+            color: #b3cde0;
         }
-    
-        #loginForm input[type="password"] {
-            padding: 10px;
-            margin-bottom: 20px;
-            border: none;
-            border-radius: 5px;
-        }
-    
-        #loginForm input[type="submit"] {
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
+
+        .btn-custom {
             background-color: #6497b1;
             color: white;
-            cursor: pointer;
         }
-    
-        #loginForm input[type="submit"]:hover {
+
+        .btn-custom:hover {
             background-color: #50788d;
         }
-    
+
         #error {
             color: white;
             background-color: red;
@@ -58,13 +54,10 @@
             text-align: center;
             font-weight: bold;
             visibility: hidden;
-            min-height: 40px;
             width: 100%;
             box-sizing: border-box;
             margin-bottom: 20px;
-            margin-top: -60px;
         }
-
     </style>
 </head>
 <body>
@@ -72,9 +65,11 @@
         <div id="error"></div>
         <div class="login">
             <form id="loginForm">
-                <label for="password">Password:</label><br>
-                <input type="password" id="password" name="password"><br>
-                <input type="submit" value="Submit">
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-custom btn-block">Submit</button>
             </form>
         </div>
     </div>
@@ -83,7 +78,7 @@
         var failed_login_count = 0;
         document.getElementById('loginForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            set_error_message('', true)
+            set_error_message('', true);
             var password = document.getElementById('password').value;
             var form_data = new FormData();
             form_data.append('password', password);
@@ -99,7 +94,6 @@
             })
             .catch(function(error) {
                 failed_login_count++;
-                // set_error_message('Invalid password. Attempt ' + failed_login_count, false);
                 set_error_message('Invalid password', false);
             });
         });
@@ -110,5 +104,8 @@
             errorDiv.style.visibility = is_hidden ? 'hidden' : 'visible';
         }
     </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
